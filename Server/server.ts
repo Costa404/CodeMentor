@@ -1,40 +1,28 @@
-// app.js
+import { passsportConfig } from "./src/config/passsportConfig";
+import dotenv from "dotenv";
 import express from "express";
-import session from "express-session";
 import cors from "cors";
+import session from "express-session";
 import passport from "passport";
-import { initAuth } from "./src/config/auth";
 import router from "./src/config/routes";
-import cookieParser from "cookie-parser";
+
+dotenv.config();
 
 const app = express();
-const port = 3000;
 
-// CORS Middleware
-app.use(
-  cors({
-    origin: "http://localhost:4200",
-    credentials: true,
-  })
-);
-
-app.use(cookieParser());
-
+app.use(cors({ origin: "http://localhost:4200", credentials: true }));
 app.use(express.json());
+
 app.use(
-  session({
-    secret: "your-secret-here",
-    resave: false,
-    saveUninitialized: false,
-  })
+  session({ secret: "your_secret", resave: false, saveUninitialized: true })
 );
+
+// Inicialização do Passport
 app.use(passport.initialize());
 app.use(passport.session());
 
-initAuth(passport);
+passsportConfig();
+
 app.use(router);
 
-// 🟢 **START SERVER**
-app.listen(port, () => {
-  console.log(`🚀 Server running on http://localhost:${port}`);
-});
+app.listen(3000, () => console.log("Server running on http://localhost:3000"));
