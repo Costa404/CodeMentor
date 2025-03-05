@@ -1,5 +1,23 @@
 <app-navbar></app-navbar>
+<!-- <app-dashboard></app-dashboard> -->
+<!-- <div class="container mt-5">
+  <button class="btn btn-primary" (click)="login()">Login com GitHub</button> -
 
-<div class="container mt-5">
-  <router-outlet></router-outlet>
-</div>
+  <div *ngIf="user" style="margin-top: 200px">
+    <h2>Bem-vindo, {{ user.displayName }}!</h2>
+    <img [src]="user.photos[0].value" alt="Avatar do GitHub" width="100" />
+  </div>
+  <p>dash</p> -->
+
+<router-outlet></router-outlet>
+
+<!-- <div *ngIf="user; else loginBlock">
+  <h2>Welcome, {{ user.displayName }}!</h2>
+  <img [src]="user.photos[0].value" alt="GitHub Avatar" width="100" />
+</div> -->
+<!-- 
+<button class="btn btn-primary mt-5" (click)="login()">Login com GitHub</button> -->
+
+<!-- <ng-template #loginBlock>
+  <button (click)="login()">Login with GitHub</button>
+</ng-template> -->

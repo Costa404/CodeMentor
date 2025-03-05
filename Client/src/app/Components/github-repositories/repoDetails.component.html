@@ -1,0 +1,22 @@
+<div *ngIf="loading">Carregando...</div>
+
+<div *ngIf="repoDetails">
+  <h2>{{ repoDetails.name }}</h2>
+  <p>{{ repoDetails.description }}</p>
+  <p>
+    <strong>Stars:</strong> {{ repoDetails.stargazers_count }} |
+    <strong>Forks:</strong> {{ repoDetails.forks_count }}
+  </p>
+  <p><strong>Último Commit:</strong> {{ repoDetails.updated_at }}</p>
+
+  <h3>Arquivos</h3>
+  <ul>
+    <li *ngFor="let file of repoFiles">
+      <a href="{{ file.html_url }}" target="_blank">{{ file.name }}</a>
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="!repoDetails && !loading">
+  <p>Não foi possível carregar os detalhes do repositório.</p>
+</div>
