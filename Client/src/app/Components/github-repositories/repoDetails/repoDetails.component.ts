@@ -1,15 +1,17 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { GithubRepoService } from './github-repo.service';
+import { GithubRepoService } from '../github-repo.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-repo-details',
   templateUrl: './repoDetails.component.html',
-
+  imports: [FormsModule, CommonModule],
   standalone: true,
 })
 export class RepoDetailsComponent implements OnInit {
   @Input() username!: string;
-  @Input() repoName!: string;
+  @Input() repo!: string;
   repoDetails: any = null;
   repoFiles: any[] = [];
   loading: boolean = false;
@@ -23,18 +25,16 @@ export class RepoDetailsComponent implements OnInit {
   loadRepoDetails(): void {
     this.loading = true;
 
-    this.githubRepoService
-      .getRepoDetails(this.username, this.repoName)
-      .subscribe(
-        (details) => {
-          this.repoDetails = details;
-        },
-        (error) => {
-          console.error('Erro ao obter detalhes do repositório:', error);
-        }
-      );
+    this.githubRepoService.getRepoDetails(this.username, this.repo).subscribe(
+      (details) => {
+        this.repoDetails = details;
+      },
+      (error) => {
+        console.error('Erro ao obter detalhes do repositório:', error);
+      }
+    );
 
-    this.githubRepoService.getRepoFiles(this.username, this.repoName).subscribe(
+    this.githubRepoService.getRepoFiles(this.username, this.repo).subscribe(
       (files) => {
         this.repoFiles = files;
         this.loading = false;

@@ -11,8 +11,8 @@ export class GithubRepoService {
   constructor(private http: HttpClient) {}
 
   /**
-   * Método para obter os repositórios públicos de um usuário do GitHub
-   * @param username Nome de usuário do GitHub
+   * Método para obter os repositórios públicos de um user no GitHub
+   * @param username Nome de um user no GitHub
    * @returns Observable com a lista de repositórios
    */
   getRepos(username: string): Observable<any[]> {
@@ -21,19 +21,19 @@ export class GithubRepoService {
 
   /**
    * Método para obter os detalhes de um repositório
-   * @param username Nome de usuário do GitHub
+   * @param username Nome de um user no GitHub
    * @param repoName Nome do repositório
    * @returns Observable com os detalhes do repositório
    */
-  getRepoDetails(username: string, repoName: string): Observable<any> {
-    return this.http.get<any>(
-      `https://api.github.com/repos/${username}/${repoName}`
-    );
+  getRepoDetails(username: string, repo: string): Observable<any> {
+    const url = `https://api.github.com/repos/${username}/${repo}`;
+    console.log('URL da API:', url); // Verifique a URL gerada
+    return this.http.get<any>(url);
   }
 
   /**
    * Método para obter os arquivos de um repositório
-   * @param username Nome de usuário do GitHub
+   * @param username Nome de um user no GitHub
    * @param repoName Nome do repositório
    * @returns Observable com os arquivos do repositório
    */
