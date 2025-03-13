@@ -1,0 +1,22 @@
+<div class="container mt-5" style="margin-top: 150px">
+  <h2 class="text-center">
+    Repositories for <strong>{{ githubUsername }}</strong>
+  </h2>
+
+  <div *ngIf="repositories.length > 0" class="mt-4">
+    <ul class="list-group shadow">
+      <li
+        *ngFor="let repo of repositories"
+        class="list-group-item list-group-item-action border rounded"
+        (click)="fetchRepoDetails(repo)"
+        style="cursor: pointer"
+      >
+        <i class="bi bi-folder"></i> {{ repo.name }}
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="repositories.length === 0" class="text-center mt-4">
+    <p class="alert alert-warning">No repositories found for this user.</p>
+  </div>
+</div>

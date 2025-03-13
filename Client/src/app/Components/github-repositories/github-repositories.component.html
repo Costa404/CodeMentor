@@ -18,27 +18,7 @@
     <p>Loading repositories...</p>
   </div>
 
-  <div *ngIf="error" class="alert alert-danger mt-3">
-    <p>{{ error }}</p>
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
   </div>
-
-  <div *ngIf="repositories.length > 0" class="mt-4">
-    <h3>Repositories {{ githubUsername }}</h3>
-    <ul class="list-group">
-      <li
-        *ngFor="let repo of repositories"
-        class="list-group-item"
-        (click)="fetchRepoDetails(repo)"
-        style="cursor: pointer"
-      >
-        {{ repo.name }}
-      </li>
-    </ul>
-  </div>
-
-  <app-repo-details
-    *ngIf="selectedRepoDetails"
-    [username]="selectedRepoDetails.username"
-    [repo]="selectedRepoDetails.repo"
-  ></app-repo-details>
 </div>

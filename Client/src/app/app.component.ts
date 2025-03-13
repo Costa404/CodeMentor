@@ -3,6 +3,7 @@ import { AuthService } from './Components/dashboard/auth.service'; // Importa o 
 import { NavbarComponent } from './Components/navbar/navbar.component';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FolderNavigationService } from './Components/github-repositories/repoDetails/folder-navigation.service';
 
 @Component({
   selector: 'app-root',
@@ -11,22 +12,10 @@ import { CommonModule } from '@angular/common';
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  title = 'CodeMentor';
-  //   user: any = null;
-  //   constructor(private authService: AuthService) {}
-  //   ngOnInit(): void {
-  //     //using BehaviorSubject
-  //     this.authService.getUserObservable().subscribe((user) => {
-  //       this.user = user;
-  //     });
-
-  //     this.authService.fetchUser();
-  //   }
-
-  //   login(): void {
-  //     this.authService.loginWithGitHub();
-  //   }
-  // }
-
-  constructor() {}
+  constructor(private folderNavigationService: FolderNavigationService) {
+    console.log(
+      '📢 FolderNavigationService injetado no AppComponent:',
+      this.folderNavigationService
+    );
+  }
 }

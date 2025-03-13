@@ -37,9 +37,21 @@ export class GithubRepoService {
    * @param repoName Nome do repositório
    * @returns Observable com os arquivos do repositório
    */
-  getRepoFiles(username: string, repoName: string): Observable<any[]> {
-    return this.http.get<any[]>(
-      `https://api.github.com/repos/${username}/${repoName}/contents`
-    );
+  getRepoFiles(
+    username: string,
+    repoName: string,
+    path: string = ''
+  ): Observable<any[]> {
+    const url = `https://api.github.com/repos/${username}/${repoName}/contents/${path}`;
+    return this.http.get<any[]>(url);
+  }
+
+  /**
+   * Método para obter o conteúdo de um arquivo a partir da URL de download
+   * @param downloadUrl URL de download do arquivo
+   * @returns Observable com o conteúdo do arquivo (texto)
+   */
+  getFileContent(downloadUrl: string): Observable<string> {
+    return this.http.get(downloadUrl, { responseType: 'text' });
   }
 }

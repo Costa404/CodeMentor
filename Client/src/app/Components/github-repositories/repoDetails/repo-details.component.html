@@ -1,0 +1,42 @@
+<div class="container mt-5 pt-3">
+  <!-- Loading -->
+  <div *ngIf="loading" class="alert alert-info text-center">Loading...</div>
+
+  <div *ngIf="repoDetails">
+    <!-- Detalhes do Repositório -->
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title">{{ repoDetails.name }}</h2>
+        <p class="card-text">
+          <strong>Descrição:</strong>
+          {{ repoDetails.description || "Sem descrição disponível" }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Lista de Arquivos -->
+    <h3 class="mb-3">Arquivos do Repositório</h3>
+    <ul class="list-group">
+      <li
+        *ngFor="let file of files"
+        class="list-group-item d-flex align-items-center"
+        [routerLink]="[username, repoName, file.path]"
+        style="cursor: pointer"
+      >
+        <span class="me-2">
+          <span *ngIf="file.download_url">📄</span>
+          <span *ngIf="!file.download_url">📁</span>
+        </span>
+        {{ file.name }}
+      </li>
+    </ul>
+  </div>
+
+  <!-- Editor de Código -->
+  <div *ngIf="selectedFile" class="mt-4">
+    <h4 class="mb-2">Conteúdo do Arquivo</h4>
+    <div class="border rounded p-3 shadow-sm">
+      <app-monaco-editor [content]="selectedFile.content"></app-monaco-editor>
+    </div>
+  </div>
+</div>
