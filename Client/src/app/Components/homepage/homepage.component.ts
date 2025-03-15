@@ -4,7 +4,7 @@ import { GithubRepositoriesComponent } from '../github-repositories/github-repos
 
 @Component({
   selector: 'app-homepage',
-  imports: [BtnloginGithubComponent, GithubRepositoriesComponent],
+  imports: [GithubRepositoriesComponent, BtnloginGithubComponent],
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.css',
 })

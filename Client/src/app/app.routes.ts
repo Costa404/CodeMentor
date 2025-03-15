@@ -16,17 +16,26 @@ export const routes: Routes = [
       ).then((m) => m.RepoListComponent),
   },
   {
-    path: ':username/:repo', // Página de detalhes do repositório
+    path: ':username/:repo',
     loadComponent: () =>
       import(
         './Components/github-repositories/repoDetails/repo-details.component'
       ).then((m) => m.RepoDetailsComponent),
+    children: [
+      {
+        path: ':path', // Captura subpastas e arquivos dentro do repositório
+        loadComponent: () =>
+          import(
+            './Components/github-repositories/repoDetails/repo-details.component'
+          ).then((m) => m.RepoDetailsComponent),
+      },
+      {
+        path: ':path/:file', // Para arquivos (exemplo: /username/repo/src/index.js)
+        loadComponent: () =>
+          import(
+            './Components/github-repositories/repoDetails/monaco-editor/monaco-editor.component'
+          ).then((m) => m.MonacoEditorComponent),
+      },
+    ],
   },
-  // {
-  //   path: ':username/:repo/:filePath', // Página de visualização do arquivo
-  //   loadComponent: () =>
-  //     import(
-  //       './Components/github-repositories/file-viewer/file-viewer.component'
-  //     ).then((m) => m.FileViewerComponent),
-  // },
 ];
