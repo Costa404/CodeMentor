@@ -3,13 +3,12 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 import { RepoDetailsService } from './ServicesRepoDetails/repo-details.service';
-import { MonacoEditorComponent } from './monaco-editor/monaco-editor.component';
 
 @Component({
   selector: 'app-repo-details',
   templateUrl: './repo-details.component.html',
   standalone: true,
-  imports: [CommonModule, RouterModule, MonacoEditorComponent],
+  imports: [CommonModule, RouterModule],
 })
 export class RepoDetailsComponent implements OnInit {
   username!: string;

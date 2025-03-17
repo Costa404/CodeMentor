@@ -9,7 +9,7 @@ export const routes: Routes = [
       ),
   },
   {
-    path: ':username', // Página de repositórios do usuário
+    path: ':username',
     loadComponent: () =>
       import(
         './Components/github-repositories/repo-list/repo-list.component'
@@ -17,24 +17,20 @@ export const routes: Routes = [
   },
   {
     path: ':username/:repo',
-    loadComponent: () =>
-      import(
-        './Components/github-repositories/repoDetails/repo-details.component'
-      ).then((m) => m.RepoDetailsComponent),
     children: [
       {
-        path: ':path', // Captura subpastas e arquivos dentro do repositório
+        path: '', // Rota vazia para :username/:repo
         loadComponent: () =>
           import(
             './Components/github-repositories/repoDetails/repo-details.component'
           ).then((m) => m.RepoDetailsComponent),
       },
       {
-        path: ':path/:file', // Para arquivos (exemplo: /username/repo/src/index.js)
+        path: '**', // Captura tudo após :username/:repo
         loadComponent: () =>
           import(
-            './Components/github-repositories/repoDetails/monaco-editor/monaco-editor.component'
-          ).then((m) => m.MonacoEditorComponent),
+            './Components/file-explorer-component/file-explorer-component.component'
+          ).then((m) => m.FileExplorerComponent),
       },
     ],
   },

@@ -1,16 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RepoDetailsService } from '../ServicesRepoDetails/repo-details.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-monaco-editor',
   templateUrl: './monaco-editor.component.html',
+  imports: [CommonModule],
+  standalone: true,
 })
 export class MonacoEditorComponent implements OnInit {
   username!: string;
   repoName!: string;
   filePath!: string;
   fileContent!: string;
+  @Input() content: string = '';
 
   constructor(
     private route: ActivatedRoute,
