@@ -1,47 +1,41 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { RepoDetailsService } from '../ServicesRepoDetails/repo-details.service';
-import { CommonModule } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  Input,
+  ElementRef,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
+import * as monaco from 'monaco-editor';
 
 @Component({
   selector: 'app-monaco-editor',
   templateUrl: './monaco-editor.component.html',
-  imports: [CommonModule],
-  standalone: true,
 })
-export class MonacoEditorComponent implements OnInit {
-  username!: string;
-  repoName!: string;
-  filePath!: string;
-  fileContent!: string;
-  @Input() content: string = '';
+export class MonacoEditorComponent implements OnInit, OnChanges {
+  @Input() content: string = ''; // Recebe o conteúdo como entrada
+  private editor: monaco.editor.IStandaloneCodeEditor | undefined;
 
-  constructor(
-    private route: ActivatedRoute,
-    private repoDetailsService: RepoDetailsService
-  ) {}
+  constructor(private el: ElementRef) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      this.username = params['username'];
-      this.repoName = params['repo'];
-      this.filePath = this.route.snapshot.url
-        .slice(2)
-        .map((segment) => segment.path)
-        .join('/'); // Captura o caminho do arquivo
+    // Referência ao elemento div com ID 'editor'
+    const editorContainer = this.el.nativeElement.querySelector('#editor');
 
-      this.repoDetailsService
-        .getFileContent(
-          `https://raw.githubusercontent.com/${this.username}/${this.repoName}/main/${this.filePath}`
-        )
-        .subscribe({
-          next: (content) => {
-            this.fileContent = content;
-          },
-          error: () => {
-            console.error('Erro ao carregar o arquivo.');
-          },
-        });
-    });
+    if (editorContainer) {
+      // Inicializa o Monaco Editor dentro do div 'editor'
+      this.editor = monaco.editor.create(editorContainer, {
+        value: this.content, // Passa o conteúdo recebido
+        language: 'javascript',
+        theme: 'vs-dark',
+      });
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Verifica se o conteúdo foi alterado e atualiza o Monaco Editor
+    if (changes['content'] && this.editor) {
+      this.editor.setValue(this.content); // Atualiza o conteúdo no Monaco Editor
+    }
   }
 }

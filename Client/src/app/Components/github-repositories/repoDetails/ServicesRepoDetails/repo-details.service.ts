@@ -27,7 +27,7 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -51,7 +51,23 @@ export class RepoDetailsService {
   }
 
   /** Obtém o conteúdo de um arquivo */
+  /** Obtém o conteúdo de um arquivo via URL de download */
   getFileContent(downloadUrl: string): Observable<string> {
-    return this.http.get(downloadUrl, { responseType: 'text' });
+    console.log(
+      '📥 [getFileContent] Buscando conteúdo do arquivo em:',
+      downloadUrl
+    );
+    return this.http.get(downloadUrl, { responseType: 'text' }).pipe(
+      tap((content) =>
+        console.log(
+          '✅ [getFileContent] Conteúdo recebido:',
+          content.substring(0, 100) + '...'
+        )
+      ),
+      catchError((error) => {
+        console.error('❌ [getFileContent] Erro ao obter conteúdo:', error);
+        return throwError(() => new Error('Erro ao carregar o arquivo.'));
+      })
+    );
   }
 }

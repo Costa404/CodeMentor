@@ -33,6 +33,7 @@ export class FileExplorerComponent implements OnInit {
       this.username = this.route.snapshot.paramMap.get('username')!;
       this.repo = this.route.snapshot.paramMap.get('repo')!;
 
+      // Concatena os segmentos da URL para formar o caminho do repositório, incluindo o nome do arquivo
       this.repoPath = segments.map((segment) => segment.path).join('/');
 
       console.log(
@@ -75,21 +76,31 @@ export class FileExplorerComponent implements OnInit {
           )
       );
   }
-
   loadFileContent(file: any) {
+    console.log('📄 [loadFileContent] Tentando carregar:', file.name);
+
     if (file.type === 'file' && file.download_url) {
+      console.log('🔗 [loadFileContent] URL do arquivo:', file.download_url);
+
+      // Navegar para a URL do arquivo, incluindo o nome do arquivo
+      this.router.navigate([
+        `/${this.username}/${this.repo}/${this.repoPath}/${file.name}`,
+      ]);
+
+      // Agora faz a requisição para pegar o conteúdo do arquivo
       this.repoService.getFileContent(file.download_url).subscribe({
         next: (content) => {
-          this.fileContent = content; // Conteúdo do arquivo
-          this.isFile = true; // Indica que estamos visualizando um arquivo
+          console.log('✅ [loadFileContent] Conteúdo recebido:', content);
+          this.fileContent = content; // Guarda o conteúdo do arquivo
+          this.isFile = true; // Sinaliza que um arquivo foi carregado
+          console.log('🖥 [loadFileContent] isFile agora é:', this.isFile);
         },
         error: (error) => {
           console.error('[loadFileContent] Erro ao carregar arquivo:', error);
         },
-        complete: () => {
-          console.log('[loadFileContent] Carregamento concluído');
-        },
       });
+    } else {
+      console.warn('⚠️ [loadFileContent] Arquivo inválido ou sem URL.');
     }
   }
 
