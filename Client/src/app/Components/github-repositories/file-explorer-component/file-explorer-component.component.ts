@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { RepoDetailsService } from '../github-repositories/repoDetails/ServicesRepoDetails/repo-details.service';
-import { FolderNavigationService } from '../github-repositories/repoDetails/ServicesRepoDetails/folder-navigation.service';
-import { MonacoEditorComponent } from '../github-repositories/repoDetails/monaco-editor/monaco-editor.component';
+import { RepoDetailsService } from './FileExploreService/file-explore.service';
+import { FolderNavigationService } from './FileExploreService/folder-navigation.service';
+import { MonacoEditorComponent } from '../monaco-editor/monaco-editor.component';
 
 @Component({
   selector: 'app-file-explorer',
@@ -12,17 +12,23 @@ import { MonacoEditorComponent } from '../github-repositories/repoDetails/monaco
   templateUrl: './file-explorer-component.component.html',
 })
 export class FileExplorerComponent implements OnInit {
+  repoName!: string;
+  path!: string;
+  repoDetails: any = null;
+  files: any[] = [];
+  loading: boolean = false;
+  error: string | null = null;
   username: string = '';
   repo: string = '';
-  repoPath: string = ''; // Caminho dentro do repositório
-  folderContents: any[] = []; // Lista de arquivos e pastas
+  repoPath: string = '';
+  folderContents: any[] = [];
   isFile: boolean = false;
-  fileContent: string = ''; // Conteúdo do arquivo
+  fileContent: string = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private repoService: RepoDetailsService,
+    private repoDetailsService: RepoDetailsService,
     private folderNavService: FolderNavigationService
   ) {}
 
@@ -33,7 +39,6 @@ export class FileExplorerComponent implements OnInit {
       this.username = this.route.snapshot.paramMap.get('username')!;
       this.repo = this.route.snapshot.paramMap.get('repo')!;
 
-      // Concatena os segmentos da URL para formar o caminho do repositório, incluindo o nome do arquivo
       this.repoPath = segments.map((segment) => segment.path).join('/');
 
       console.log(
@@ -42,7 +47,6 @@ export class FileExplorerComponent implements OnInit {
       );
       console.log('📂 [ngOnInit] Caminho do repositório:', this.repoPath);
 
-      // Atualiza e carrega os conteúdos
       this.updatePath();
       this.loadRepoContents();
     });
@@ -55,7 +59,7 @@ export class FileExplorerComponent implements OnInit {
   loadRepoContents() {
     if (!this.username || !this.repo) return;
 
-    this.repoService
+    this.repoDetailsService
       .getRepoFiles(this.username, this.repo, this.repoPath)
       .subscribe(
         (response) => {
@@ -70,30 +74,20 @@ export class FileExplorerComponent implements OnInit {
           }
         },
         (error) =>
-          console.error(
-            '[loadRepoContents] Erro ao carregar repositório:',
-            error
-          )
+          console.error('[loadRepoContents]  Error loading rep:', error)
       );
   }
   loadFileContent(file: any) {
-    console.log('📄 [loadFileContent] Tentando carregar:', file.name);
-
     if (file.type === 'file' && file.download_url) {
-      console.log('🔗 [loadFileContent] URL do arquivo:', file.download_url);
-
-      // Navegar para a URL do arquivo, incluindo o nome do arquivo
       this.router.navigate([
         `/${this.username}/${this.repo}/${this.repoPath}/${file.name}`,
       ]);
 
-      // Agora faz a requisição para pegar o conteúdo do arquivo
-      this.repoService.getFileContent(file.download_url).subscribe({
+      this.repoDetailsService.getFileContent(file.download_url).subscribe({
         next: (content) => {
-          console.log('✅ [loadFileContent] Conteúdo recebido:', content);
-          this.fileContent = content; // Guarda o conteúdo do arquivo
-          this.isFile = true; // Sinaliza que um arquivo foi carregado
-          console.log('🖥 [loadFileContent] isFile agora é:', this.isFile);
+          console.log('✅ [loadFileContent] content recebido:', content);
+          this.fileContent = content;
+          this.isFile = true;
         },
         error: (error) => {
           console.error('[loadFileContent] Erro ao carregar arquivo:', error);
@@ -117,12 +111,23 @@ export class FileExplorerComponent implements OnInit {
     );
   }
 
-  goBack() {
-    const prevPath = this.folderNavService.goBack();
-    if (prevPath) {
-      this.router.navigate([`/${this.username}/${this.repo}/${prevPath}`]);
+  selectFile(file: any): void {
+    if (file.type === 'dir') {
+      this.router.navigate([this.username, this.repoName, file.path]);
     } else {
-      this.router.navigate([`/${this.username}/${this.repo}`]);
+      this.router.navigate([this.username, this.repoName, file.path]);
     }
+  }
+
+  navigateToCodeAnalysis(file: any) {
+    // Acessando apenas o necessário
+    const fileName = file.name;
+    const fileUrl = file.download_url;
+
+    // Lógica para navegação
+    console.log('Arquivo selecionado:', fileName);
+
+    // Por exemplo, você pode navegar para uma página de análise de código:
+    this.router.navigate([`/codeAnalysis/${fileName}`]);
   }
 }

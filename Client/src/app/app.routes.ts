@@ -9,6 +9,13 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'codeAnalysis/:fileName', // Rota vazia para :username/:repo
+    loadComponent: () =>
+      import('./Components/code-analysis/code-analysis.component').then(
+        (m) => m.CodeAnalysisComponent
+      ),
+  },
+  {
     path: ':username',
     loadComponent: () =>
       import(
@@ -19,17 +26,10 @@ export const routes: Routes = [
     path: ':username/:repo',
     children: [
       {
-        path: '', // Rota vazia para :username/:repo
-        loadComponent: () =>
-          import(
-            './Components/github-repositories/repoDetails/repo-details.component'
-          ).then((m) => m.RepoDetailsComponent),
-      },
-      {
         path: '**', // Captura tudo após :username/:repo
         loadComponent: () =>
           import(
-            './Components/file-explorer-component/file-explorer-component.component'
+            './Components/github-repositories/file-explorer-component/file-explorer-component.component'
           ).then((m) => m.FileExplorerComponent),
       },
     ],
