@@ -6,8 +6,10 @@ export interface UserProfile {
   [key: string]: any;
 }
 
-// Definindo a interface User com apenas as propriedades necessárias
-export interface User {
-  displayName: string;
-  photos: { value: string }[];
+export interface UserInfo {
+  login: string;
+  name: string;
+  avatar_url: string;
+  bio: string;
+  // adicione outras propriedades conforme necessário
 }

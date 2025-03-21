@@ -1,65 +1,6 @@
-// import { Injectable } from '@angular/core';
-// import { HttpClient } from '@angular/common/http';
-// import { Observable } from 'rxjs';
-
-// @Injectable({
-//   providedIn: 'root',
-// })
-// export class GithubRepoService {
-//   private baseUrl = 'https://api.github.com/users'; // URL da API do GitHub para repositórios públicos
-
-//   constructor(private http: HttpClient) {}
-
-//   /**
-//    * Método para obter os repositórios públicos de um user no GitHub
-//    * @param username Nome de um user no GitHub
-//    * @returns Observable com a lista de repositórios
-//    */
-//   getRepos(username: string): Observable<any[]> {
-//     return this.http.get<any[]>(`${this.baseUrl}/${username}/repos`);
-//   }
-
-//   /**
-//    * Método para obter os detalhes de um repositório
-//    * @param username Nome de um user no GitHub
-//    * @param repoName Nome do repositório
-//    * @returns Observable com os detalhes do repositório
-//    */
-//   getRepoDetails(username: string, repo: string): Observable<any> {
-//     const url = `https://api.github.com/repos/${username}/${repo}`;
-//     console.log('URL da API:', url); // Verifique a URL gerada
-//     return this.http.get<any>(url);
-//   }
-
-//   /**
-//    * Método para obter os arquivos de um repositório
-//    * @param username Nome de um user no GitHub
-//    * @param repoName Nome do repositório
-//    * @returns Observable com os arquivos do repositório
-//    */
-//   getRepoFiles(
-//     username: string,
-//     repoName: string,
-//     path: string = ''
-//   ): Observable<any[]> {
-//     const base = `https://api.github.com/repos/${username}/${repoName}/contents`;
-//     const url = path ? `${base}/${path}` : base; // Evita barra extra no final
-//     return this.http.get<any[]>(url);
-//   }
-
-//   /**
-//    * Método para obter o conteúdo de um arquivo a partir da URL de download
-//    * @param downloadUrl URL de download do arquivo
-//    * @returns Observable com o conteúdo do arquivo (texto)
-//    */
-//   getFileContent(downloadUrl: string): Observable<string> {
-//     return this.http.get(downloadUrl, { responseType: 'text' });
-//   }
-// }
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -67,10 +8,41 @@ import { Observable } from 'rxjs';
 export class GithubRepoService {
   private baseUrl = 'https://api.github.com/users';
 
+  private userInfoSubject = new BehaviorSubject<any>(null); // Subject que armazena a info
+  userInfo$ = this.userInfoSubject.asObservable(); // Observable que pode ser assinado no componente
+
+  private loadingSubject = new BehaviorSubject<boolean>(false); // Adicionando o BehaviorSubject para loading
+  loading$ = this.loadingSubject.asObservable(); // Observable para o componente se inscrever
+
   constructor(private http: HttpClient) {}
 
-  /** Obtém os repositórios públicos de um usuário */
+  // Método para buscar informações do usuário e atualizar o Subject
+  getUserInfo(username: string): void {
+    this.loadingSubject.next(true); // Inicia o loading
+    this.http.get<any>(`${this.baseUrl}/${username}`).subscribe({
+      next: (user) => {
+        this.userInfoSubject.next(user); // Atualiza o BehaviorSubject com a nova informação
+        this.loadingSubject.next(false); // Finaliza o loading
+      },
+      error: (err) => {
+        console.error('Erro ao carregar as informações do usuário', err);
+        this.loadingSubject.next(false); // Finaliza o loading em caso de erro
+      },
+    });
+  }
+
+  // Método para obter repositórios (retorna um Observable)
   getRepos(username: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/${username}/repos`);
+    this.loadingSubject.next(true); // Inicia o loading
+    return this.http
+      .get<any[]>(`${this.baseUrl}/${username}/repos`)
+      .pipe
+      // Após a requisição ser completada, o loading será finalizado no componente
+      // Aqui não é necessário finalizar o loading pois o componente vai controlar isso
+      ();
+  }
+
+  stopLoading(): void {
+    this.loadingSubject.next(false); // Método para parar o loading manualmente, se necessário
   }
 }

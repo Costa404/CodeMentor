@@ -1,3 +1,4 @@
+import { UserInfo } from './../../Models/profile.model';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { GithubRepoService } from './github-repo.service';
@@ -15,21 +16,38 @@ export class GithubRepositoriesComponent {
   repositories: any[] = [];
   loading: boolean = false;
   error: string | null = null;
+  userInfo: UserInfo | null = null;
 
   constructor(
     private githubRepoService: GithubRepoService,
     private router: Router
   ) {}
 
-  // Método para buscar repositórios
+  // Método para buscar informações do usuário e repositórios
   fetchRepos(): void {
     console.log('Botão foi clicado!');
 
     if (!this.githubUsername) {
-      this.error = 'Por favor, insira um nome do user.';
+      this.error = 'Por favor, insira um nome do usuário.';
       return;
     }
 
+    // Buscar as informações do usuário
+    this.githubRepoService.getUserInfo(this.githubUsername); // Atualiza o BehaviorSubject
+
+    // Assinar o userInfo$ para receber as atualizações
+    this.githubRepoService.userInfo$.subscribe({
+      next: (userInfo: UserInfo) => {
+        this.userInfo = userInfo;
+        console.log('Informações do usuário:', this.userInfo);
+      },
+      error: (err) => {
+        console.error('Erro ao carregar as informações do usuário:', err);
+        this.error = 'Erro ao carregar as informações do usuário';
+      },
+    });
+
+    // Buscar os repositórios do usuário
     this.loading = true;
     this.error = null;
 
@@ -46,6 +64,7 @@ export class GithubRepositoriesComponent {
       },
     });
 
+    // Navegar para a página do usuário
     this.router.navigate([this.githubUsername]);
   }
 }

@@ -1,7 +1,5 @@
-<div class="container mt-5 pt-3">
-  <div *ngIf="loading" class="alert alert-info text-center">Loading...</div>
-
-  <div *ngIf="repoDetails">
+<div class="mt-5 vh-100 text-white w-100 vw-100">
+  <!-- <div *ngIf="repoDetails">
     <div class="card mb-4 shadow-sm">
       <div class="card-body">
         <h2 class="card-title">{{ repoDetails.name }}</h2>
@@ -12,43 +10,38 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
+  <app-github-account-details></app-github-account-details>
+  <section>
+    <div *ngIf="!isFile" class="pt-5">
+      <ul class="list-unstyled">
+        <li *ngFor="let item of folderContents">
+          <span (click)="navigateToFolder(item)" *ngIf="item.type === 'dir'">
+            📁 {{ item.name }}
+          </span>
 
-<section class="p-5">
-  <div *ngIf="!isFile" class="pt-5">
-    <ul class="list-unstyled">
-      <li *ngFor="let item of folderContents">
-        <span (click)="navigateToFolder(item)" *ngIf="item.type === 'dir'">
-          📁 {{ item.name }}
-        </span>
+          <span (click)="loadFileContent(item)" *ngIf="item.type === 'file'">
+            📄 {{ item.name }}
+          </span>
+        </li>
+      </ul>
+    </div>
 
-        <span (click)="loadFileContent(item)" *ngIf="item.type === 'file'">
-          📄 {{ item.name }}
-        </span>
-      </li>
-    </ul>
-  </div>
+    <!-- ==============================
 
-  <ul class="list-group">
-    <li
-      *ngFor="let file of files"
-      class="list-group-item d-flex align-items-center"
-      style="cursor: pointer"
-      (click)="selectFile(file)"
-    >
-      <span class="me-2">
-        <span *ngIf="file.download_url">📄</span>
-        <span *ngIf="!file.download_url">📁</span>
-      </span>
-      {{ file.name }}
-    </li>
-  </ul>
+    div
 
-  <div *ngIf="isFile">
+    ============================== -->
+  </section>
+
+  <div *ngIf="isFile" class="pt-5 w-75">
     <h2>Arquivo: {{ repoPath }}</h2>
-    <button class="btn btn-primary" (click)="navigateToCodeAnalysis(files)">
-      Anylying coding
-    </button>
+    <!-- <button class="btn btn-primary" (click)="toggleChat()">
+      {{ chatVisible ? "Fechar Análise" : "Analisar Código" }}
+    </button> -->
+
+    <app-chat *ngIf="chatVisible" [fileContent]="fileContent"></app-chat>
+
     <app-monaco-editor [content]="fileContent"></app-monaco-editor>
   </div>
-</section>
+</div>

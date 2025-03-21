@@ -1,6 +1,7 @@
-<app-navbar></app-navbar>
-<!-- <app-dashboard></app-dashboard> -->
-<!-- <div class="container mt-5">
+<div class="w-75 mx-auto">
+  <app-navbar></app-navbar>
+  <!-- <app-dashboard></app-dashboard> -->
+  <!-- <div class="container mt-5">
   <button class="btn btn-primary" (click)="login()">Login com GitHub</button> -
 
   <div *ngIf="user" style="margin-top: 200px">
@@ -9,7 +10,8 @@
   </div>
   <p>dash</p> -->
 
-<router-outlet></router-outlet>
+  <router-outlet class="p-5"></router-outlet>
+</div>
 
 <!-- <div *ngIf="user; else loginBlock">
   <h2>Welcome, {{ user.displayName }}!</h2>

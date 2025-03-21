@@ -1,0 +1,38 @@
+<!-- Modal Overlay -->
+<div *ngIf="isOpen$ | async" class="modal-overlay" (click)="closeChat()">
+  <div class="modal-content p-1" (click)="$event.stopPropagation()">
+    <div
+      class="chat-header d-flex justify-content-between align-items-center bg-black text-white p-2 rounded"
+    >
+      <h5 class="mb-0">Code Analysing</h5>
+      <button class="btn btn-sm fw-bolder btn-danger" (click)="closeChat()">
+        X
+      </button>
+    </div>
+
+    <div class="chat-messages">
+      <div
+        *ngFor="let msg of chatMessages"
+        class="p-2 rounded mb-2"
+        [ngClass]="{
+          'bg-primary text-white align-self-end': msg.sender === 'User',
+          'bg-secondary text-white align-self-start': msg.sender === 'AI'
+        }"
+      >
+        <strong>{{ msg.sender }}:</strong> {{ msg.message }}
+      </div>
+
+      <div *ngIf="isLoading" class="text-center text-muted">Analysing...</div>
+    </div>
+
+    <div class="chat-input p-1">
+      <input
+        type="text"
+        [(ngModel)]="userQuery"
+        class="form-control"
+        placeholder="Send code"
+      />
+      <button class="btn btn-primary" (click)="askMore()">Send</button>
+    </div>
+  </div>
+</div>

@@ -8,13 +8,13 @@ export const routes: Routes = [
         (m) => m.HomepageComponent
       ),
   },
-  {
-    path: 'codeAnalysis/:fileName', // Rota vazia para :username/:repo
-    loadComponent: () =>
-      import('./Components/code-analysis/code-analysis.component').then(
-        (m) => m.CodeAnalysisComponent
-      ),
-  },
+  // {
+  //   path: 'codeAnalysis/:fileName', // Rota vazia para :username/:repo
+  //   loadComponent: () =>
+  //     import(
+  //       './Components/github-repositories/file-explorer-component/FileExploreService/chat/code-analysis/code-analysis.component'
+  //     ).then((m) => m.CodeAnalysisComponent),
+  // },
   {
     path: ':username',
     loadComponent: () =>

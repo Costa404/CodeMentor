@@ -1,0 +1,12 @@
+<div *ngIf="userInfo">
+  <div class="d-flex w-100 justify-content-between">
+    <img
+      [src]="userInfo.avatar_url"
+      alt="{{ userInfo.login }}"
+      width="100"
+      style="border-radius: 100%"
+    />
+
+    <p>{{ userInfo.login }}</p>
+  </div>
+</div>

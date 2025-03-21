@@ -1,0 +1,57 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1050;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 8px;
+
+  width: 50vw;
+  height: 75vh;
+  max-width: 90%;
+  max-height: 90%;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para o chat-box */
+.chat-box {
+  width: 100%;
+  height: 100%; /* Garantir que o chat box ocupe todo o conteúdo do modal */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estilo para a área de mensagens */
+.chat-messages {
+  flex-grow: 1; /* Permite que a área de mensagens cresça para preencher o espaço restante */
+  max-height: calc(
+    75vh - 100px
+  ); /* Limita a altura da área de mensagens considerando o cabeçalho */
+  overflow-y: auto; /* Permite rolagem vertical */
+  padding: 10px;
+}
+
+/* Estilo para as mensagens do usuário e IA */
+.bg-primary {
+  background-color: #007bff !important;
+}
+.bg-secondary {
+  background-color: #6c757d !important;
+}
+
+.chat-input {
+  display: flex;
+  gap: 10px;
+
+  border-top: 1px solid #ddd;
+}

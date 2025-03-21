@@ -1,18 +1,15 @@
-<div class="container">
-  <div class="form-group">
-    <label for="githubUsername">Username github</label>
+<div class="">
+  <div class="form-group gap-3 d-flex">
     <input
       type="text"
       class="form-control"
       id="githubUsername"
       [(ngModel)]="githubUsername"
-      placeholder="insert github user"
+      placeholder=" github userName"
     />
-  </div>
 
-  <button (click)="fetchRepos()" class="btn btn-primary mt-3">
-    Search repositories
-  </button>
+    <button (click)="fetchRepos()" class="btn btn-primary">Search</button>
+  </div>
 
   <div *ngIf="loading" class="mt-3">
     <p>Loading repositories...</p>

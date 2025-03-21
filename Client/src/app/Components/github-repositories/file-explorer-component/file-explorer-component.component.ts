@@ -3,27 +3,30 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RepoDetailsService } from './FileExploreService/file-explore.service';
 import { FolderNavigationService } from './FileExploreService/folder-navigation.service';
-import { MonacoEditorComponent } from '../monaco-editor/monaco-editor.component';
+import { ChatComponent } from './chat/chat.component';
+import { MonacoEditorComponent } from './monaco-editor/monaco-editor.component';
+import { GithubAccountDetailsComponent } from '../../github-account-details/github-account-details.component';
 
 @Component({
   selector: 'app-file-explorer',
   standalone: true,
-  imports: [CommonModule, MonacoEditorComponent],
+  imports: [
+    CommonModule,
+    MonacoEditorComponent,
+    ChatComponent,
+    GithubAccountDetailsComponent,
+  ],
   templateUrl: './file-explorer-component.component.html',
 })
 export class FileExplorerComponent implements OnInit {
-  repoName!: string;
   path!: string;
-  repoDetails: any = null;
-  files: any[] = [];
-  loading: boolean = false;
-  error: string | null = null;
   username: string = '';
   repo: string = '';
   repoPath: string = '';
   folderContents: any[] = [];
   isFile: boolean = false;
   fileContent: string = '';
+  chatVisible: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -34,7 +37,7 @@ export class FileExplorerComponent implements OnInit {
 
   ngOnInit() {
     this.route.url.subscribe((segments) => {
-      console.log('🔄 [ngOnInit] Executando...');
+      // console.log('🔄 [ngOnInit] Executando...');
 
       this.username = this.route.snapshot.paramMap.get('username')!;
       this.repo = this.route.snapshot.paramMap.get('repo')!;
@@ -53,50 +56,57 @@ export class FileExplorerComponent implements OnInit {
   }
 
   updatePath() {
-    console.log('[updatePath] Caminho do repositório:', this.repoPath);
+    // console.log('[updatePath] Caminho do repositório:', this.repoPath);
   }
+
+  // ======================
+  // new method
+  // ======================
 
   loadRepoContents() {
     if (!this.username || !this.repo) return;
 
     this.repoDetailsService
       .getRepoFiles(this.username, this.repo, this.repoPath)
-      .subscribe(
-        (response) => {
+      .subscribe({
+        next: (response) => {
           console.log('[loadRepoContents] Resposta da API:', response);
 
           if (Array.isArray(response)) {
-            // Se a resposta for um array, é uma pasta
             this.folderContents = response;
           } else {
-            // Se a resposta for um objeto, é um arquivo
             this.folderContents = [response];
           }
         },
-        (error) =>
-          console.error('[loadRepoContents]  Error loading rep:', error)
-      );
+        error: (error) => {
+          console.error('[loadRepoContents] Error loading repo:', error);
+        },
+      });
   }
+  // ======================
+  // new method
+  // ======================
   loadFileContent(file: any) {
     if (file.type === 'file' && file.download_url) {
       this.router.navigate([
         `/${this.username}/${this.repo}/${this.repoPath}/${file.name}`,
       ]);
-
       this.repoDetailsService.getFileContent(file.download_url).subscribe({
         next: (content) => {
-          console.log('✅ [loadFileContent] content recebido:', content);
+          console.log('✅ Conteúdo recebido:', content);
           this.fileContent = content;
           this.isFile = true;
         },
         error: (error) => {
-          console.error('[loadFileContent] Erro ao carregar arquivo:', error);
+          console.error('Erro ao carregar arquivo:', error);
         },
       });
-    } else {
-      console.warn('⚠️ [loadFileContent] Arquivo inválido ou sem URL.');
     }
   }
+
+  // ======================
+  // new method
+  // ======================
 
   navigateToFolder(folder: any) {
     const newPath = this.repoPath
@@ -110,24 +120,19 @@ export class FileExplorerComponent implements OnInit {
       this.router
     );
   }
-
-  selectFile(file: any): void {
-    if (file.type === 'dir') {
-      this.router.navigate([this.username, this.repoName, file.path]);
-    } else {
-      this.router.navigate([this.username, this.repoName, file.path]);
-    }
-  }
+  // ======================
+  // new method
+  // ======================
 
   navigateToCodeAnalysis(file: any) {
-    // Acessando apenas o necessário
     const fileName = file.name;
-    const fileUrl = file.download_url;
 
-    // Lógica para navegação
-    console.log('Arquivo selecionado:', fileName);
+    // console.log('Arquivo selecionado:', fileName);
 
-    // Por exemplo, você pode navegar para uma página de análise de código:
     this.router.navigate([`/codeAnalysis/${fileName}`]);
   }
+
+  // toggleChat() {
+  //   this.chatVisible = !this.chatVisible;
+  // }
 }
