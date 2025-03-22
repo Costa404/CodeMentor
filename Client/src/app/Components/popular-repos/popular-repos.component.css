@@ -1,0 +1,11 @@
+/* Estilizando os dots (pontos de navegação) */
+.slick-dots li button:before {
+  color: white; /* Muda a cor dos dots para branco */
+  opacity: 0.75; /* Ajusta a opacidade dos dots */
+  font-size: 12px; /* Tamanho dos dots */
+}
+
+.slick-dots li.slick-active button:before {
+  color: white; /* Muda a cor do dot ativo para branco */
+  opacity: 1; /* Aumenta a opacidade do dot ativo */
+}

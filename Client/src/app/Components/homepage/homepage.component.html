@@ -1,5 +1,23 @@
-<button class="btn btn-primary mt-5" (click)="openChat()">Abrir Chat</button>
+<section class="vh-100 d-flex flex-column text-white">
+  <div class="container d-flex flex-column gap-5 py-5">
+    <div class="text-center">
+      <h2 class="mb-4 fw-bold">Explore repositories</h2>
+      <app-github-repositories></app-github-repositories>
+    </div>
 
-<app-chat></app-chat>
+    <div class="text-center">
+      <app-popular-repos></app-popular-repos>
+    </div>
 
-<app-github-repositories></app-github-repositories>
+    <div
+      class="text-center d-flex flex-column align-items-center border-bottom border-dark pb-5"
+    >
+      <h2 class="mb-3">You need help? Try this Ia chat</h2>
+      <button class="btn btn-primary btn-lg" (click)="openChat()">
+        IA chat
+      </button>
+    </div>
+  </div>
+
+  <app-chat></app-chat>
+</section>

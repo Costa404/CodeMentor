@@ -1,12 +1,18 @@
 <div *ngIf="userInfo">
-  <div class="d-flex w-100 justify-content-between">
+  <div class="d-flex flex-column text-white">
     <img
       [src]="userInfo.avatar_url"
       alt="{{ userInfo.login }}"
-      width="100"
+      width="200"
       style="border-radius: 100%"
     />
 
-    <p>{{ userInfo.login }}</p>
+    <span>
+      <p class="fw-bold fs-5">{{ userInfo.name }}</p>
+      <p class="text-secondary">{{ userInfo.login }}</p></span
+    >
+    <p class="w-75 text-wrap">{{ userInfo.bio }}</p>
+    <p>{{ userInfo.location }}</p>
+    <a [href]="userInfo.blog" target="_blank">{{ userInfo.blog }}</a>
   </div>
 </div>

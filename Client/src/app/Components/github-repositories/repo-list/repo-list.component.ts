@@ -1,9 +1,11 @@
 import { GithubRepoService } from './../github-repo.service';
-// repo-list.component.ts
+
 import { CommonModule } from '@angular/common';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GithubAccountDetailsComponent } from '../../github-account-details/github-account-details.component';
+import { formatDistanceToNowStrict } from 'date-fns';
+import { enUS } from 'date-fns/locale';
 
 @Component({
   selector: 'app-repo-list',
@@ -13,6 +15,7 @@ import { GithubAccountDetailsComponent } from '../../github-account-details/gith
     GithubAccountDetailsComponent,
     GithubAccountDetailsComponent,
   ],
+  styleUrls: ['./repo-list.css'],
 })
 export class RepoListComponent {
   githubUsername: string = '';
@@ -34,29 +37,34 @@ export class RepoListComponent {
   }
 
   fetchRepos(): void {
-    this.loading = true; // Começar o carregamento
+    this.loading = true;
 
     if (!this.githubUsername) {
       this.error = 'Por favor, insira um nome do usuário.';
-      this.loading = false; // Interromper o carregamento em caso de erro
+      this.loading = false;
       return;
     }
 
-    // Buscar os repositórios do usuário
     this.githubRepoService.getRepos(this.githubUsername).subscribe({
       next: (repos) => {
         this.repositories = repos;
-        this.loading = false; // Finalizar o carregamento
+        this.loading = false;
       },
       error: (err) => {
-        console.error('Erro ao carregar os repositórios:', err);
-        this.error = 'Erro ao carregar os repositórios';
-        this.loading = false; // Finalizar o carregamento em caso de erro
+        console.error('Erro ao carregar os repos:', err);
+        this.error = 'Erro ao carregar os repos';
+        this.loading = false;
       },
     });
   }
 
   fetchRepoDetails(repo: any): void {
     this.router.navigate([this.githubUsername, repo.name]);
+  }
+
+  formatTimeAgo(dateString: string): string {
+    return formatDistanceToNowStrict(new Date(dateString), {
+      locale: enUS,
+    });
   }
 }

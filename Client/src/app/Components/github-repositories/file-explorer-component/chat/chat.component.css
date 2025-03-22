@@ -23,25 +23,20 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilo para o chat-box */
 .chat-box {
   width: 100%;
-  height: 100%; /* Garantir que o chat box ocupe todo o conteúdo do modal */
+  height: 100%;
   display: flex;
   flex-direction: column;
 }
 
-/* Estilo para a área de mensagens */
 .chat-messages {
-  flex-grow: 1; /* Permite que a área de mensagens cresça para preencher o espaço restante */
-  max-height: calc(
-    75vh - 100px
-  ); /* Limita a altura da área de mensagens considerando o cabeçalho */
-  overflow-y: auto; /* Permite rolagem vertical */
+  flex-grow: 1;
+  max-height: calc(75vh - 100px);
+  overflow-y: auto;
   padding: 10px;
 }
 
-/* Estilo para as mensagens do usuário e IA */
 .bg-primary {
   background-color: #007bff !important;
 }

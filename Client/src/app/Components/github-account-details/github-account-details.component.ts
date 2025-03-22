@@ -22,7 +22,7 @@ export class GithubAccountDetailsComponent implements OnInit {
         console.log('userInfo mo detialsGh', this.userInfo);
       },
       error: (err) => {
-        this.error = 'Erro ao carregar as informações do usuário';
+        this.error = 'Erro ao carregar as informações do user';
       },
     });
   }
