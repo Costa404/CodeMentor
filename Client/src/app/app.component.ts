@@ -1,32 +1,49 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from './Components/dashboard/auth.service'; // Importa o serviço de autenticação
+import { Component } from '@angular/core';
 import { NavbarComponent } from './Components/navbar/navbar.component';
-import { RouterOutlet } from '@angular/router';
+import {
+  NavigationCancel,
+  NavigationEnd,
+  NavigationError,
+  NavigationStart,
+  Router,
+  RouterOutlet,
+} from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
+import { filter, map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent, CommonModule],
+  standalone: true,
+  imports: [
+    RouterOutlet,
+    NavbarComponent,
+    CommonModule,
+    LoadingSpinnerComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent {
   title = 'CodeMentor';
-  //   user: any = null;
-  //   constructor(private authService: AuthService) {}
-  //   ngOnInit(): void {
-  //     //using BehaviorSubject
-  //     this.authService.getUserObservable().subscribe((user) => {
-  //       this.user = user;
-  //     });
+  status = '';
+  loading!: Observable<boolean>;
 
-  //     this.authService.fetchUser();
-  //   }
-
-  //   login(): void {
-  //     this.authService.loginWithGitHub();
-  //   }
-  // }
-
-  constructor() {}
+  constructor(private router: Router) {
+    this.loading = this.router.events.pipe(
+      filter((event) =>
+        [
+          NavigationStart,
+          NavigationEnd,
+          NavigationError,
+          NavigationCancel,
+        ].some((constructor) => event instanceof constructor)
+      ),
+      map((event) => event instanceof NavigationStart),
+      tap((isLoading) => {
+        this.status = isLoading ? 'navigating' : 'done';
+      })
+    );
+  }
 }

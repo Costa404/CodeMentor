@@ -11,7 +11,7 @@
     </div>
   </div>
 </div> -->
-  <app-github-account-details></app-github-account-details>
+  <app-path-navigator></app-path-navigator>>
   <section>
     <div *ngIf="!isFile" class="pt-5">
       <ul class="list-unstyled">
@@ -35,10 +35,9 @@
   </section>
 
   <div *ngIf="isFile" class="pt-5 w-75">
-    <h2>Arquivo: {{ repoPath }}</h2>
-    <!-- <button class="btn btn-primary" (click)="toggleChat()">
+    <button class="btn btn-primary" (click)="toggleChat()">
       {{ chatVisible ? "Fechar Análise" : "Analisar Código" }}
-    </button> -->
+    </button>
 
     <app-chat *ngIf="chatVisible" [fileContent]="fileContent"></app-chat>
 

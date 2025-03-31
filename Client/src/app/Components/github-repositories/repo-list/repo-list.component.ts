@@ -3,18 +3,16 @@ import { GithubRepoService } from './../github-repo.service';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GithubAccountDetailsComponent } from '../../github-account-details/github-account-details.component';
+
 import { formatDistanceToNowStrict } from 'date-fns';
 import { enUS } from 'date-fns/locale';
+
+import { GithubAccountDetailsComponent } from '../github-account-details/github-account-details.component';
 
 @Component({
   selector: 'app-repo-list',
   templateUrl: './repo-list.component.html',
-  imports: [
-    CommonModule,
-    GithubAccountDetailsComponent,
-    GithubAccountDetailsComponent,
-  ],
+  imports: [CommonModule, GithubAccountDetailsComponent],
   styleUrls: ['./repo-list.css'],
 })
 export class RepoListComponent {
@@ -47,8 +45,14 @@ export class RepoListComponent {
 
     this.githubRepoService.getRepos(this.githubUsername).subscribe({
       next: (repos) => {
-        this.repositories = repos;
+        // Ordena os repositórios pela data de atualização
+        this.repositories = repos.sort((a, b) => {
+          const dateA = new Date(a.updated_at).getTime();
+          const dateB = new Date(b.updated_at).getTime();
+          return dateB - dateA; // Ordem decrescente (mais recente primeiro)
+        });
         this.loading = false;
+        console.log('Repositórios encontrados:', repos);
       },
       error: (err) => {
         console.error('Erro ao carregar os repos:', err);

@@ -5,7 +5,8 @@ import { RepoDetailsService } from './FileExploreService/file-explore.service';
 import { FolderNavigationService } from './FileExploreService/folder-navigation.service';
 import { ChatComponent } from './chat/chat.component';
 import { MonacoEditorComponent } from './monaco-editor/monaco-editor.component';
-import { GithubAccountDetailsComponent } from '../../github-account-details/github-account-details.component';
+
+import { PathNavigatorComponent } from '../path-navigator/path-navigator.component';
 
 @Component({
   selector: 'app-file-explorer',
@@ -14,7 +15,8 @@ import { GithubAccountDetailsComponent } from '../../github-account-details/gith
     CommonModule,
     MonacoEditorComponent,
     ChatComponent,
-    GithubAccountDetailsComponent,
+    PathNavigatorComponent,
+    PathNavigatorComponent,
   ],
   templateUrl: './file-explorer-component.component.html',
 })
@@ -131,8 +133,11 @@ export class FileExplorerComponent implements OnInit {
 
     this.router.navigate([`/codeAnalysis/${fileName}`]);
   }
+  // ======================
+  // new method
+  // ======================
 
-  // toggleChat() {
-  //   this.chatVisible = !this.chatVisible;
-  // }
+  toggleChat() {
+    this.chatVisible = !this.chatVisible;
+  }
 }

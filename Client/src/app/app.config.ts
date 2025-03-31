@@ -17,7 +17,8 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(CommonModule),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withComponentInputBinding()),
+
     provideClientHydration(withEventReplay()),
-    provideHttpClient(withFetch()), // Aqui você adiciona o withFetch()
+    provideHttpClient(withFetch()),
   ],
 };

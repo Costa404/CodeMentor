@@ -1,0 +1,6 @@
+<div class="d-flex" *ngIf="pathParts.length > 0">
+  <div *ngFor="let part of pathParts; let i = index">
+    <span *ngIf="i > 0"> / </span>
+    <a [routerLink]="getPathLink(i)">{{ part }}</a>
+  </div>
+</div>
