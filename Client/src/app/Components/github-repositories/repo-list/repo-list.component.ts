@@ -45,11 +45,10 @@ export class RepoListComponent {
 
     this.githubRepoService.getRepos(this.githubUsername).subscribe({
       next: (repos) => {
-        // Ordena os repositórios pela data de atualização
         this.repositories = repos.sort((a, b) => {
           const dateA = new Date(a.updated_at).getTime();
           const dateB = new Date(b.updated_at).getTime();
-          return dateB - dateA; // Ordem decrescente (mais recente primeiro)
+          return dateB - dateA;
         });
         this.loading = false;
         console.log('Repositórios encontrados:', repos);

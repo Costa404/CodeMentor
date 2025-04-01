@@ -26,7 +26,7 @@ export const routes: Routes = [
     path: ':username/:repo',
     children: [
       {
-        path: '**',
+        path: '**', // Captura tudo após :username/:repo
         loadComponent: () =>
           import(
             './Components/github-repositories/file-explorer-component/file-explorer-component.component'

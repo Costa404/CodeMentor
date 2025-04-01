@@ -1,2 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
 @import "bootstrap/dist/css/bootstrap.min.css";
+
+.hover {
+  cursor: pointer;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+@media (max-width: 700px) {
+  .appMobile {
+    width: 100% !important;
+  }
+
+  .accountDetailsMobile {
+    display: none;
+  }
+}

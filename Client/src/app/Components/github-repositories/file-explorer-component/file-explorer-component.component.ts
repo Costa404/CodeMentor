@@ -7,6 +7,7 @@ import { ChatComponent } from './chat/chat.component';
 import { MonacoEditorComponent } from './monaco-editor/monaco-editor.component';
 
 import { PathNavigatorComponent } from '../path-navigator/path-navigator.component';
+import { LoadingSpinnerComponent } from '../../../loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-file-explorer',
@@ -15,7 +16,6 @@ import { PathNavigatorComponent } from '../path-navigator/path-navigator.compone
     CommonModule,
     MonacoEditorComponent,
     ChatComponent,
-    PathNavigatorComponent,
     PathNavigatorComponent,
   ],
   templateUrl: './file-explorer-component.component.html',
@@ -39,8 +39,6 @@ export class FileExplorerComponent implements OnInit {
 
   ngOnInit() {
     this.route.url.subscribe((segments) => {
-      // console.log('🔄 [ngOnInit] Executando...');
-
       this.username = this.route.snapshot.paramMap.get('username')!;
       this.repo = this.route.snapshot.paramMap.get('repo')!;
 

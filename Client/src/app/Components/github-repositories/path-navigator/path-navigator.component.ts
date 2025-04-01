@@ -18,7 +18,6 @@ export class PathNavigatorComponent implements OnInit {
     this.route.url.subscribe(() => {
       const fullPath = window.location.pathname;
       this.pathParts = fullPath.split('/').filter((part) => part !== '');
-      console.log('📂 Path Parts Atualizados:', this.pathParts);
     });
   }
 

@@ -11,16 +11,24 @@
     </div>
   </div>
 </div> -->
-  <app-path-navigator></app-path-navigator>>
+  <app-path-navigator></app-path-navigator>
   <section>
-    <div *ngIf="!isFile" class="pt-5">
+    <div *ngIf="!isFile" class="pt-3">
       <ul class="list-unstyled">
         <li *ngFor="let item of folderContents">
-          <span (click)="navigateToFolder(item)" *ngIf="item.type === 'dir'">
+          <span
+            (click)="navigateToFolder(item)"
+            class="hover"
+            *ngIf="item.type === 'dir'"
+          >
             📁 {{ item.name }}
           </span>
 
-          <span (click)="loadFileContent(item)" *ngIf="item.type === 'file'">
+          <span
+            (click)="loadFileContent(item)"
+            class="hover"
+            *ngIf="item.type === 'file'"
+          >
             📄 {{ item.name }}
           </span>
         </li>
