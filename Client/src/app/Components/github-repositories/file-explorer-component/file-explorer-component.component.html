@@ -43,12 +43,9 @@
   </section>
 
   <div *ngIf="isFile" class="pt-5 w-75">
-    <button class="btn btn-primary" (click)="toggleChat()">
-      {{ chatVisible ? "Fechar Análise" : "Analisar Código" }}
-    </button>
-
-    <app-chat *ngIf="chatVisible" [fileContent]="fileContent"></app-chat>
+    <button class="btn btn-primary" (click)="openChat()">IA Help</button>
 
     <app-monaco-editor [content]="fileContent"></app-monaco-editor>
+    <app-chat [fileContent]="fileContent"></app-chat>
   </div>
 </div>

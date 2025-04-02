@@ -60,7 +60,8 @@ export class ChatComponent implements OnInit {
 
     this.chatService.analyzeCode(requestPayload).subscribe({
       next: (response) => {
-        this.chatMessages.push({ sender: 'User ', message: this.userQuery });
+        console.log('Resposta da IA:', response.suggestion);
+        this.chatMessages.push({ sender: 'User', message: this.userQuery });
         this.chatMessages.push({ sender: 'AI', message: response.suggestion });
         this.userQuery = '';
         this.isLoading = false;

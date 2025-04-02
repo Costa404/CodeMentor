@@ -15,10 +15,11 @@
         *ngFor="let msg of chatMessages"
         class="p-2 rounded mb-2"
         [ngClass]="{
-          'bg-primary text-white align-self-end': msg.sender === 'User',
-          'bg-secondary text-white align-self-start': msg.sender === 'AI'
+          'bg-primary text-white text-end': msg.sender === 'User',
+          'bg-secondary text-white text-start': msg.sender === 'AI'
         }"
       >
+        <div></div>
         <strong>{{ msg.sender }}:</strong> {{ msg.message }}
       </div>
 

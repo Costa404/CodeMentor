@@ -8,6 +8,7 @@ import { MonacoEditorComponent } from './monaco-editor/monaco-editor.component';
 
 import { PathNavigatorComponent } from '../path-navigator/path-navigator.component';
 import { LoadingSpinnerComponent } from '../../../loading-spinner/loading-spinner.component';
+import { ChatService } from './chat/chat.service';
 
 @Component({
   selector: 'app-file-explorer',
@@ -34,7 +35,8 @@ export class FileExplorerComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private repoDetailsService: RepoDetailsService,
-    private folderNavService: FolderNavigationService
+    private folderNavService: FolderNavigationService,
+    private chatService: ChatService
   ) {}
 
   ngOnInit() {
@@ -135,7 +137,7 @@ export class FileExplorerComponent implements OnInit {
   // new method
   // ======================
 
-  toggleChat() {
-    this.chatVisible = !this.chatVisible;
+  openChat() {
+    this.chatService.openModal();
   }
 }
